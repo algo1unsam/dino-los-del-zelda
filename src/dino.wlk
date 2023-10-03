@@ -140,6 +140,7 @@ object dino {
 	method morir(){
 		game.say(self,"¡Auch!")
 		vivo = false
+		keyboard.space().onPressDo{game.start()}
 	}
 	method iniciar() {
 		vivo = true
@@ -160,6 +161,6 @@ object configDino{
 	}
 	
 	method gravedad(){
-		game.onTick(1, "gravedad", {=> dino.bajar()})
+		game.onTick(30, "gravedad", {=> dino.bajar()})
 	}
 }
