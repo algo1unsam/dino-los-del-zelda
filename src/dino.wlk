@@ -1,7 +1,5 @@
 import wollok.game.*
     
-const velocidad = 250
-
 object juego{
 
 	method configurar(){
@@ -73,6 +71,7 @@ object reloj {
 object cactus {
 	 
 	var position = self.posicionInicial()
+	var velocidad = 250
 
 	method image() = "cactus.png"
 	method position() = position
@@ -82,17 +81,23 @@ object cactus {
 	method iniciar(){
 		position = self.posicionInicial()
 		game.onTick(velocidad,"moverCactus",{self.mover()})
+		game.onTick(1,"condicionSiChoca", {
+			if (self.chocar()){
+			self.detener()
+			}
+		})
 	}
 	
 	method mover(){
-		//COMPLETAR
+		position = position.left(1)
 	}
 	
 	method chocar(){
-		//COMPLETAR
+		return position == dino.position()
 	}
     method detener(){
-		//COMPLETAR
+		game.removeTickEvent("moverCactus")
+		reloj.detener()
 	}
 }
 
