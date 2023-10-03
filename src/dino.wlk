@@ -88,6 +88,11 @@ object cactus {
 			self.detener()
 			}
 		})
+		game.onTick(1,"bucleCactus", {
+			if (self.position().x() == 0){
+				position = self.posicionInicial()
+			}
+		})
 	}
 	
 	method mover(){
@@ -99,7 +104,10 @@ object cactus {
 	}
     method detener(){
 		game.removeTickEvent("moverCactus")
+		game.removeTickEvent("bucleCactus")
+		game.removeTickEvent("condicionSiChoca")
 		reloj.detener()
+		dino.morir()
 	}
 }
 
