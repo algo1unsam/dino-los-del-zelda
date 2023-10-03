@@ -5,6 +5,8 @@ program dinosaurio {
 
 	juego.configurar()
 	juego.iniciar()
+	configDino.teclas()
+	configDino.gravedad()
 	game.start()
 
 }

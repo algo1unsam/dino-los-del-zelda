@@ -16,6 +16,7 @@ object juego{
 		keyboard.space().onPressDo{ self.jugar()}
 		
 		game.onCollideDo(dino,{ obstaculo => obstaculo.chocar()})
+		reloj.iniciar()
 		
 	} 
 	
@@ -59,14 +60,15 @@ object reloj {
 	method position() = game.at(1, game.height()-1)
 	
 	method pasarTiempo() {
-		//COMPLETAR
+		tiempo+=0.1
 	}
 	method iniciar(){
 		tiempo = 0
 		game.onTick(100,"tiempo",{self.pasarTiempo()})
 	}
 	method detener(){
-		//COMPLETAR
+		game.removeTickEvent("tiempo")
+		game.removeTickEvent("gravedad")
 	}
 }
 
@@ -98,30 +100,37 @@ object cactus {
 
 object suelo{
 	
-	method position() = game.origin().up(1)
+	var property position = game.origin().up(1)
 	
 	method image() = "suelo.png"
+	
+	method chocar(){}
 }
 
 
 object dino {
 	var vivo = true
-
-	var position = game.at(1,suelo.position().y())
+	var property position = game.at(1,suelo.position().y())
 	
 	method image() = "dino.png"
-	method position() = position
 	
 	method saltar(){
-		//COMPLETAR
+		position = position.up(1.3)
 	}
 	
-	method subir(){
-		position = position.up(1)
-	}
+//	method subir(){
+//		position = position.up(1)
+//	}
 	
 	method bajar(){
-		position = position.down(1)
+		if (self.position().y() <= suelo.position().y())
+		{
+			position = suelo.position()
+		}else{
+			position = position.down(0.1)
+		}
+		
+		
 	}
 	method morir(){
 		game.say(self,"¡Auch!")
@@ -132,5 +141,20 @@ object dino {
 	}
 	method estaVivo() {
 		return vivo
+	}
+	
+	
+}
+
+
+object configDino{
+	
+	method teclas()
+	{
+		keyboard.space().onPressDo{dino.saltar()}
+	}
+	
+	method gravedad(){
+		game.onTick(1, "gravedad", {=> dino.bajar()})
 	}
 }
